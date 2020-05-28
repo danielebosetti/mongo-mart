@@ -1,17 +1,15 @@
 package mongomart;
 
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
+import static spark.SparkBase.port;
+import static spark.SparkBase.staticFileLocation;
+import java.io.IOException;
 import com.mongodb.client.MongoDatabase;
 import freemarker.template.Configuration;
 import mongomart.controller.AdminController;
 import mongomart.controller.CartController;
 import mongomart.controller.LocationsController;
 import mongomart.controller.StoreController;
-import java.io.IOException;
-import static spark.SparkBase.port;
-import static spark.SparkBase.staticFileLocation;
+import util.UtilMongoFactory;
 
 /**
  * Main MongoMart class
@@ -20,10 +18,11 @@ import static spark.SparkBase.staticFileLocation;
  * located in README.md) Run the main method below Open http://localhost:8080
  */
 public class MongoMart {
-  public static final int HTTP_PORT = 8080; // HTTP port to listen for requests on
+  
+  public static final int HTTP_PORT = 8080;
 
   public static void main(String[] args) throws IOException {
-    new MongoMart("mongodb://localhost:30000,localhost:30001,localhost:30002");
+    new MongoMart();
   }
   /**
    * Create an instance of MongoMart
@@ -32,7 +31,7 @@ public class MongoMart {
    * @throws IOException
    */
 
-  public MongoMart(String mongoURIString) throws IOException {
+  public MongoMart() throws IOException {
     /**
      * TODO-lab1
      *
@@ -42,8 +41,7 @@ public class MongoMart {
      * HINT: You'll need to create a MongoClient object first, the "mongoURIString" may also be used
      *
      */
-    MongoClient client = MongoClients.create(mongoURIString);
-    final MongoDatabase itemDatabase = client.getDatabase("mongomart");
+    final MongoDatabase itemDatabase = UtilMongoFactory.getDatabase();
 
     /**
      * TODO-lab1 Replace all code above
